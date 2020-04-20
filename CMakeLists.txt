@@ -29,6 +29,9 @@ project(efm32-test C CXX ASM)
 # Set device
 if (NOT DEVICE)
     set(DEVICE EFM32G210F128)
+    # set(CPU_FAMILY_U BGM1)
+    # set(CPU_FAMILY_L bgm1)
+    # set(DEVICE BGM1)
     # set(DEVICE BGM13P22F512GA)
     # set(BOARD BRD4306A)
     # set(BLE_LIB EFR32BG13P)
@@ -64,7 +67,9 @@ include_directories(${BASE_LOCATION}/include)
 
 # Generate executable and link
 add_executable(${PROJECT_NAME}
-        source/main.c)
+        source/main.c
+        source/randomnumgen.cpp
+        source/formula.cpp)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
