@@ -16,7 +16,7 @@ cmake_minimum_required(VERSION 2.8.4)
 # Optional verbose mode, uncomment or pass in -DCMAKE_VERBOSE_MAKEFILE=ON
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(BASE_LOCATION .)
+set(BASE_LOCATION ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Set the compiler (must be prior to project setup)
 include(${BASE_LOCATION}/toolchain/arm-gcc.cmake)
@@ -28,10 +28,10 @@ project(efm32-test C CXX ASM)
 
 # Set device
 if (NOT DEVICE)
-    set(DEVICE EFM32G210F128)
+    # set(DEVICE EFM32G210F128)
     # set(CPU_FAMILY_U BGM1)
     # set(CPU_FAMILY_L bgm1)
-    # set(DEVICE BGM1)
+    set(DEVICE BGM1)
     # set(DEVICE BGM13P22F512GA)
     # set(BOARD BRD4306A)
     # set(BLE_LIB EFR32BG13P)
