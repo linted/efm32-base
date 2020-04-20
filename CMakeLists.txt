@@ -25,13 +25,14 @@ include(${BASE_LOCATION}/toolchain/arm-gcc.cmake)
 
 # Configure project and languages
 project(efm32-test C CXX ASM)
+set(DEVICE BGM1)
+set(TEMP_DEVICE_LEN "4")
 
 # Set device
 if (NOT DEVICE)
     # set(DEVICE EFM32G210F128)
     # set(CPU_FAMILY_U BGM1)
     # set(CPU_FAMILY_L bgm1)
-    set(DEVICE BGM1)
     # set(DEVICE BGM13P22F512GA)
     # set(BOARD BRD4306A)
     # set(BLE_LIB EFR32BG13P)
