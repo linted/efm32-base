@@ -25,7 +25,7 @@ include(${BASE_LOCATION}/toolchain/arm-gcc.cmake)
 
 # Configure project and languages
 project(efm32-test C CXX ASM)
-set(DEVICE BGM1)
+set(DEVICE BGM113A256V2)
 set(TEMP_DEVICE_LEN "4")
 add_compile_definitions(BGM113A256V2)
 
