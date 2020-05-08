@@ -26,8 +26,10 @@ include(${BASE_LOCATION}/toolchain/arm-gcc.cmake)
 # Configure project and languages
 project(efm32-test C CXX ASM)
 set(DEVICE BGM113A256V2)
-set(TEMP_DEVICE_LEN "4")
-add_compile_definitions(BGM113A256V2)
+set(FLASH_ORIGIN 0x00000000)
+set(FLASH_LENGTH 0x40000)
+set(RAM_ORIGIN 0x20000000)
+set(RAM_LENGTH 0x7bff)
 
 # Set device
 if (NOT DEVICE)
@@ -70,7 +72,6 @@ add_executable(${PROJECT_NAME}
         source/main.c
         source/randomnumgen.cpp
         source/formula.cpp)
-target_compile_definitions(${PROJECT_NAME} PUBLIC BGM113A256V2=1)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
