@@ -19,3 +19,5 @@ builds/
 *.DS_Store
 *.user
 
+# Rust 
+Cargo.lock

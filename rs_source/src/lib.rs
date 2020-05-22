@@ -1,10 +1,22 @@
 #![no_std]
 #![no_main]
 #![feature(lang_items)]
+#![feature(alloc_error_handler)]
 
 use core::panic::PanicInfo;
 
-extern crate libc;
+extern crate alloc;
+extern crate linked_list_allocator;
+
+use linked_list_allocator::LockedHeap;
+
+#[global_allocator]
+static ALLOCATOR: LockedHeap = LockedHeap::empty();
+
+#[alloc_error_handler]
+fn alloc_error_handler(layout: alloc::alloc::Layout) -> !{
+    panic!("");
+}
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
