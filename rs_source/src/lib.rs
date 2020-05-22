@@ -35,7 +35,7 @@ extern "C" {
 pub fn rs_main() {
     loop {
         unsafe{ delay(1000) };
-        unsafe{ toggle_pin(0, 4) };
+        unsafe{ toggle_pin(5, 3) };
     }
 }
 
