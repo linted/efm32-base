@@ -18,6 +18,16 @@ set(LINKER_SCRIPT ${BLE_LINKER_SCRIPT} PARENT_SCOPE)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
+set( BLE_LIBRARIES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/binapploader.o
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libbluetooth.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libmbedtls.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libpsstore.a
+    # bluetooth/lib/EFR32BG1B/GCC/
+)
+
+target_link_libraries(${PROJECT_NAME} INTERFACE ${BLE_LIBRARIES})
+
 target_include_directories(${PROJECT_NAME} INTERFACE
         bluetooth/ble_stack/inc/common
         protocol/bluetooth/ble_stack/inc/soc)
