@@ -23,7 +23,10 @@ set( BLE_LIBRARIES
     ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libbluetooth.a
     ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libmbedtls.a
     ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libpsstore.a
-    # bluetooth/lib/EFR32BG1B/GCC/
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/binapploader_nvm3.o
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libcoex.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libnvm3.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/librail.a
 )
 
 target_link_libraries(${PROJECT_NAME} INTERFACE ${BLE_LIBRARIES})
