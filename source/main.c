@@ -9,7 +9,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include "em_device.h"
 #include "em_chip.h"
 #include "em_cmu.h"
@@ -17,6 +16,8 @@
 #include "em_gpio.h"
 
 volatile uint32_t msTicks; /* counts 1ms timeTicks */
+
+extern void rs_main();
 
 void Delay(uint32_t dlyTicks);
 
@@ -33,12 +34,17 @@ void SysTick_Handler(void)
  * @brief Delays number of msTick Systicks (typically 1 ms)
  * @param dlyTicks Number of ticks to delay
  *****************************************************************************/
-void Delay(uint32_t dlyTicks)
+void delay(uint32_t dlyTicks)
 {
     uint32_t curTicks;
 
     curTicks = msTicks;
     while ((msTicks - curTicks) < dlyTicks) ;
+}
+
+void toggle_pin(uint32_t p, uint32_t t)
+{
+    GPIO_PinOutToggle(p, t);
 }
 
 /**************************************************************************//**
@@ -58,14 +64,9 @@ int main(void)
 
     GPIO_PinOutSet(LED_PORT, LED_PIN);
 
-    printf("test");
 
     /* Infinite blink loop */
-    while (1)
-    {
-        Delay(1000);
-        GPIO_PinOutToggle(LED_PORT, LED_PIN);
-    }
+    rs_main();
 }
 
 

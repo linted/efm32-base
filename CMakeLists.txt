@@ -43,6 +43,7 @@ endif ()
 
 # Add base libs (emlib, CMSIS, device files)
 include(${BASE_LOCATION}/toolchain/efm32-base.cmake)
+include(${BASE_LOCATION}/cmake/print_target_properties.cmake)
 
 add_subdirectory(${BASE_LOCATION}/cmsis)
 add_subdirectory(${BASE_LOCATION}/emlib)
@@ -60,34 +61,37 @@ set(CMAKE_EXE_LINKER_FLAGS "${COMMON_DEFINITIONS} -Xlinker -T${LINKER_SCRIPT} -W
 include_directories(${BASE_LOCATION}/include)
 
 # Generate executable and link
-#add_executable(${PROJECT_NAME}
-#        source/main.c
-#        source/randomnumgen.cpp
-#        source/formula.cpp)
+add_executable(${PROJECT_NAME}
+        source/main.c
+        #source/randomnumgen.cpp
+        #source/formula.cpp
+        )
 
 add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/libmain.a
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/main.rs
-    COMMAND rustc --target=thumbv7m-none-eabi --crate-type=staticlib ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/main.rs
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
+    COMMAND cargo build --target "thumbv7m-none-eabi" --target-dir ${CMAKE_CURRENT_BINARY_DIR}/rs_main -Z unstable-options --out-dir ${CMAKE_CURRENT_BINARY_DIR}/rs_artifacts
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/rs_source
     )
 
 add_custom_target(rs_libmain_build
     DEPENDS ${CMAKE_BINARY_DIR}/libmain.a
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
     )
 
 add_library(rs_main STATIC IMPORTED)
 set_target_properties(rs_main
     PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/libmain.a)
+    IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/rs_artifacts/librs_source.a)
 
 # Generate executable and link
-add_executable(${PROJECT_NAME} source/empty.c)
 add_dependencies(${PROJECT_NAME} rs_libmain_build)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} ${LIBS} emlib cmsis device rs_main)
+
+# print_target_properties(${PROJECT_NAME})
 
 # Link optional libraries if available
 if (${HAS_HARDWARE})
