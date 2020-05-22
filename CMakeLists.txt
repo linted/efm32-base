@@ -31,14 +31,6 @@ set(FLASH_LENGTH 0x40000)
 set(RAM_ORIGIN 0x20000000)
 set(RAM_LENGTH 0x7bff)
 
-# Set device
-if (NOT DEVICE)
-    set(DEVICE EFM32G210F128)
-    # set(DEVICE BGM13P22F512GA)
-    # set(BOARD BRD4306A)
-    # set(BLE_LIB EFR32BG13P)
-endif ()
-
 # Set build
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE DEBUG)
@@ -68,14 +60,34 @@ set(CMAKE_EXE_LINKER_FLAGS "${COMMON_DEFINITIONS} -Xlinker -T${LINKER_SCRIPT} -W
 include_directories(${BASE_LOCATION}/include)
 
 # Generate executable and link
-add_executable(${PROJECT_NAME}
-        source/main.c
-        source/randomnumgen.cpp
-        source/formula.cpp)
+#add_executable(${PROJECT_NAME}
+#        source/main.c
+#        source/randomnumgen.cpp
+#        source/formula.cpp)
+
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/libmain.a
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/main.rs
+    COMMAND rustc --target=thumbv7m-none-eabi --crate-type=staticlib ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/main.rs
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+
+add_custom_target(rs_libmain_build
+    DEPENDS ${CMAKE_BINARY_DIR}/libmain.a
+    )
+
+add_library(rs_main STATIC IMPORTED)
+set_target_properties(rs_main
+    PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/libmain.a)
+
+# Generate executable and link
+add_executable(${PROJECT_NAME} source/empty.c)
+add_dependencies(${PROJECT_NAME} rs_libmain_build)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} ${LIBS} emlib cmsis device)
+target_link_libraries(${PROJECT_NAME} ${LIBS} emlib cmsis device rs_main)
 
 # Link optional libraries if available
 if (${HAS_HARDWARE})
