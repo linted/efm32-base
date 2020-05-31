@@ -10,11 +10,13 @@ extern crate linked_list_allocator;
 
 use linked_list_allocator::LockedHeap;
 
+mod coru;
+
 #[global_allocator]
 static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
 #[alloc_error_handler]
-fn alloc_error_handler(layout: alloc::alloc::Layout) -> !{
+fn alloc_error_handler(_layout: alloc::alloc::Layout) -> !{
     panic!("");
 }
 

@@ -74,9 +74,15 @@ add_custom_command(
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/rs_source
     )
 
+set(RS_LIBMAIN_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
+    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/waiter.rs
+    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/executor.rs
+    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/waker.rs)
+
 add_custom_target(rs_libmain_build
     DEPENDS ${CMAKE_BINARY_DIR}/libmain.a
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
+    SOURCES ${RS_LIBMAIN_SRCS}
     )
 set_target_properties(rs_libmain_build
     PROPERTIES
