@@ -99,7 +99,7 @@ add_dependencies(${PROJECT_NAME} rs_libmain_build)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} rs_main ${LIBS} emlib cmsis device )
+target_link_libraries(${PROJECT_NAME} rs_main ${LIBS} cmsis device emlib)
 
 # print_target_properties(${PROJECT_NAME})
 

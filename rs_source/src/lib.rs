@@ -1,20 +1,19 @@
 #![no_std]
-#![no_main]
 #![feature(lang_items)]
 #![feature(alloc_error_handler)]
 
 use core::panic::PanicInfo;
 
 extern crate alloc;
-extern crate linked_list_allocator;
-
-use linked_list_allocator::LockedHeap;
 
 mod coru;
 use coru::executor::Executor;
 
+mod bg_malloc;
+use bg_malloc::BGAlloc;
+
 #[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
+static ALLOCATOR: BGAlloc = BGAlloc{};
 
 #[alloc_error_handler]
 fn alloc_error_handler(_layout: alloc::alloc::Layout) -> !{
