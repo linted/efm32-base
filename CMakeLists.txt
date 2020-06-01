@@ -77,6 +77,7 @@ add_custom_command(
 set(RS_LIBMAIN_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
     ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/waiter.rs
+    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/tick_waiter.rs
     ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/executor.rs
     ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/waker.rs)
 

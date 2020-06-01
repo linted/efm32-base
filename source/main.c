@@ -30,6 +30,11 @@ void SysTick_Handler(void)
     msTicks++;       /* increment counter necessary in Delay()*/
 }
 
+uint32_t current_ticks(void)
+{
+    return msTicks;
+}
+
 /**************************************************************************//**
  * @brief Delays number of msTick Systicks (typically 1 ms)
  * @param dlyTicks Number of ticks to delay

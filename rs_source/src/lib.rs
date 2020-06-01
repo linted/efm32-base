@@ -11,6 +11,7 @@ extern crate linked_list_allocator;
 use linked_list_allocator::LockedHeap;
 
 mod coru;
+use coru::executor::Executor;
 
 #[global_allocator]
 static ALLOCATOR: LockedHeap = LockedHeap::empty();
@@ -31,13 +32,20 @@ extern "C" fn eh_personality() {}
 extern "C" {
     fn delay(_amnt: usize);
     fn toggle_pin(pin: u32, t: u32);
+    fn current_ticks() -> u32;
 }
 
 #[no_mangle]
 pub fn rs_main() {
-    loop {
-        unsafe{ delay(1000) };
-        unsafe{ toggle_pin(5, 3) };
-    }
+    let mut exe = Executor::new();
+
+    exe.push(move | mut fib | async move {
+        loop {
+            unsafe { toggle_pin(5,3) };
+            fib.tick_waiter(1000).await;
+        }
+    });
+
+    exe.run();
 }
 
