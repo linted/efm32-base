@@ -18,19 +18,27 @@ set(LINKER_SCRIPT ${BLE_LINKER_SCRIPT} PARENT_SCOPE)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
-set( BLE_LIBRARIES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/binapploader.o
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libbluetooth.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libmbedtls.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libpsstore.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/binapploader_nvm3.o
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libcoex.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libnvm3.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/librail.a
-)
+macro(import_lib target_name file)
+    add_library(${target_name} STATIC IMPORTED)
+    set_target_properties(${target_name}
+        PROPERTIES
+        IMPORTED_LOCATION ${file}
+    )
+    target_link_libraries(${PROJECT_NAME} INTERFACE ${target_name})
+endmacro()
 
-target_link_libraries(${PROJECT_NAME} INTERFACE ${BLE_LIBRARIES})
+import_lib(binapploader ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/binapploader.o)
+import_lib(libbluetooth ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libbluetooth.a)
+import_lib(libmbedtls ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libmbedtls.a)
+import_lib(libpsstore ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libpsstore.a)
+import_lib(binapploader_nvm3 ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/binapploader_nvm3.o)
+import_lib(libcoex ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libcoex.a)
+import_lib(libnvm3 ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libnvm3.a)
+import_lib(librail ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/librail.a)
+
+
+target_link_libraries(libbluetooth INTERFACE emlib)
 
 target_include_directories(${PROJECT_NAME} INTERFACE
         bluetooth/ble_stack/inc/common
-        protocol/bluetooth/ble_stack/inc/soc)
+        bluetooth/ble_stack/inc/soc)
