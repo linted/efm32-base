@@ -74,12 +74,7 @@ add_custom_command(
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/rs_source
     )
 
-set(RS_LIBMAIN_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
-    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/waiter.rs
-    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/tick_waiter.rs
-    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/executor.rs
-    ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/coru/waker.rs)
+file(GLOB_RECURSE RS_LIBMAIN_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} rs_source/src/*.rs )
 
 add_custom_target(rs_libmain_build
     DEPENDS ${CMAKE_BINARY_DIR}/libmain.a
@@ -99,7 +94,7 @@ add_dependencies(${PROJECT_NAME} rs_libmain_build)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} rs_main ${LIBS} cmsis device emlib)
+target_link_libraries(${PROJECT_NAME} -Wl,--whole-archive rs_main -Wl,--no-whole-archive ${LIBS} cmsis device emlib)
 
 # print_target_properties(${PROJECT_NAME})
 

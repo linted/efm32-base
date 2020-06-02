@@ -12,6 +12,9 @@ use coru::executor::Executor;
 mod bg_malloc;
 use bg_malloc::BGAlloc;
 
+mod handlers;
+mod state;
+
 #[global_allocator]
 static ALLOCATOR: BGAlloc = BGAlloc{};
 
@@ -29,9 +32,7 @@ fn panic(_info: &PanicInfo) -> ! {
 extern "C" fn eh_personality() {}
 
 extern "C" {
-    fn delay(_amnt: usize);
     fn toggle_pin(pin: u32, t: u32);
-    fn current_ticks() -> u32;
 }
 
 #[no_mangle]

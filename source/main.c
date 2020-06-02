@@ -15,37 +15,13 @@
 #include "em_emu.h"
 #include "em_gpio.h"
 
-volatile uint32_t msTicks; /* counts 1ms timeTicks */
-
 extern void rs_main();
 
-void Delay(uint32_t dlyTicks);
-
-/**************************************************************************//**
- * @brief SysTick_Handler
- * Interrupt Service Routine for system tick counter
- *****************************************************************************/
-void SysTick_Handler(void)
-{
-    msTicks++;       /* increment counter necessary in Delay()*/
-}
-
-uint32_t current_ticks(void)
-{
-    return msTicks;
-}
 
 /**************************************************************************//**
  * @brief Delays number of msTick Systicks (typically 1 ms)
  * @param dlyTicks Number of ticks to delay
  *****************************************************************************/
-void delay(uint32_t dlyTicks)
-{
-    uint32_t curTicks;
-
-    curTicks = msTicks;
-    while ((msTicks - curTicks) < dlyTicks) ;
-}
 
 void toggle_pin(uint32_t p, uint32_t t)
 {

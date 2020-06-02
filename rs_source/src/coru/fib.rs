@@ -1,6 +1,6 @@
 use super::waiter::Waiter;
 use super::tick_waiter::TickWaiter;
-use crate::current_ticks;
+use crate::state::current_ticks;
 
 pub enum State {
     Halted,
@@ -16,10 +16,10 @@ impl Fib {
         Waiter { fib: self }
     }
 
-    pub fn tick_waiter<'a>(&'a mut self, ticks: u32) -> TickWaiter<'a> {
+    pub fn tick_waiter<'a>(&'a mut self, ticks: u64) -> TickWaiter<'a> {
         TickWaiter {
             fib: self,
-            end: unsafe { current_ticks() } + ticks,
+            end: current_ticks() + ticks,
         }
     }
 }
