@@ -7,16 +7,17 @@ use core::panic::PanicInfo;
 extern crate alloc;
 
 mod coru;
-use coru::executor::Executor;
 
 mod bg_malloc;
 use bg_malloc::BGAlloc;
 
 mod handlers;
+pub use handlers::*; // This has to stay
 mod state;
 mod bindings;
 
-use bindings::*;
+mod rs_main;
+pub use rs_main::rs_main;
 
 #[global_allocator]
 static ALLOCATOR: BGAlloc = BGAlloc{};
@@ -35,17 +36,4 @@ fn panic(_info: &PanicInfo) -> ! {
 extern "C" fn eh_personality() {}
 
 
-#[no_mangle]
-pub fn rs_main() {
-    let mut exe = Executor::new();
-
-    exe.push(move | mut fib | async move {
-        loop {
-            unsafe { toggle_pin(5,3) };
-            fib.tick_waiter(1000).await;
-        }
-    });
-
-    exe.run();
-}
 
