@@ -14,6 +14,9 @@ use bg_malloc::BGAlloc;
 
 mod handlers;
 mod state;
+mod bindings;
+
+use bindings::*;
 
 #[global_allocator]
 static ALLOCATOR: BGAlloc = BGAlloc{};
@@ -31,9 +34,6 @@ fn panic(_info: &PanicInfo) -> ! {
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() {}
 
-extern "C" {
-    fn toggle_pin(pin: u32, t: u32);
-}
 
 #[no_mangle]
 pub fn rs_main() {
