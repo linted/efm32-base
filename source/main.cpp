@@ -15,17 +15,21 @@
 #include "em_emu.h"
 #include "em_gpio.h"
 
-extern void rs_main();
-
+static uint64_t g_ticks = 0;
 
 /**************************************************************************//**
  * @brief Delays number of msTick Systicks (typically 1 ms)
  * @param dlyTicks Number of ticks to delay
  *****************************************************************************/
-
-void toggle_pin(uint32_t p, uint32_t t)
+void SysTick_Handler()
 {
-    GPIO_PinOutToggle(p, t);
+    g_ticks++;
+}
+
+void delay(uint32_t ticks)
+{
+    uint64_t start = g_ticks;
+    while(g_ticks - start < ticks);
 }
 
 /**************************************************************************//**
@@ -45,9 +49,12 @@ int main(void)
 
     GPIO_PinOutSet(LED_PORT, LED_PIN);
 
+    for(;;)
+    {
+        delay(1000);
+        GPIO_PinOutToggle(LED_PORT, LED_PIN);
+    }
 
-    /* Infinite blink loop */
-    rs_main();
 }
 
 

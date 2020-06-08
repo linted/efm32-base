@@ -24,7 +24,7 @@ include(${BASE_LOCATION}/toolchain/arm-gcc.cmake)
 ##### Project Setup #####
 
 # Configure project and languages
-project(efm32-test C CXX ASM)
+project(badge-firmware C CXX ASM)
 set(DEVICE BGM113A256V2)
 set(FLASH_ORIGIN 0x00000000)
 set(FLASH_LENGTH 0x40000)
@@ -62,39 +62,16 @@ include_directories(${BASE_LOCATION}/include)
 
 # Generate executable and link
 add_executable(${PROJECT_NAME}
-        source/main.c
+        source/main.cpp
         #source/randomnumgen.cpp
         #source/formula.cpp
         )
-
-add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/libmain.a
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/rs_source/src/lib.rs
-    COMMAND cargo build --target "thumbv7m-none-eabi" --target-dir ${CMAKE_CURRENT_BINARY_DIR}/rs_main -Z unstable-options --out-dir ${CMAKE_CURRENT_BINARY_DIR}/rs_artifacts
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/rs_source
-    )
-
-file(GLOB_RECURSE RS_LIBMAIN_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} rs_source/src/*.rs )
-
-add_custom_target(rs_libmain_build
-    DEPENDS ${CMAKE_BINARY_DIR}/libmain.a
-    SOURCES ${RS_LIBMAIN_SRCS}
-    )
-set_target_properties(rs_libmain_build
-    PROPERTIES
-    ADDITIONAL_CLEAN_FILES "${CMAKE_BINARY_DIR}/rs_main;${CMAKE_CURRENT_BINARY_DIR}/rs_artifacts")
-
-add_library(rs_main STATIC IMPORTED)
-set_target_properties(rs_main
-    PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/rs_artifacts/librs_source.a)
-
-# Generate executable and link
-add_dependencies(${PROJECT_NAME} rs_libmain_build)
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -fno-exceptions -fno-rtti)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} -Wl,--whole-archive rs_main -Wl,--no-whole-archive ${LIBS} cmsis device emlib)
+target_link_libraries(${PROJECT_NAME} ${LIBS} cmsis device emlib)
 
 # print_target_properties(${PROJECT_NAME})
 
