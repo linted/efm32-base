@@ -24,12 +24,11 @@ static uint64_t g_ticks = 0;
 void SysTick_Handler()
 {
     g_ticks++;
-}
 
-void delay(uint32_t ticks)
-{
-    uint64_t start = g_ticks;
-    while(g_ticks - start < ticks);
+    if(g_ticks % 1000 == 0)
+    {
+        GPIO_PinOutToggle(LED_PORT, LED_PIN);
+    }
 }
 
 /**************************************************************************//**
@@ -49,10 +48,10 @@ int main(void)
 
     GPIO_PinOutSet(LED_PORT, LED_PIN);
 
+
     for(;;)
     {
-        delay(1000);
-        GPIO_PinOutToggle(LED_PORT, LED_PIN);
+        EMU_EnterEM1();
     }
 
 }

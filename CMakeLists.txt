@@ -67,7 +67,7 @@ add_executable(${PROJECT_NAME}
         #source/formula.cpp
         )
 target_compile_options(${PROJECT_NAME} PRIVATE
-    -fno-exceptions -fno-rtti)
+    -fno-exceptions -fno-rtti -Os)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
