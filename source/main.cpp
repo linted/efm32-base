@@ -21,9 +21,9 @@ static uint64_t g_ticks = 0;
  * @brief Delays number of msTick Systicks (typically 1 ms)
  * @param dlyTicks Number of ticks to delay
  *****************************************************************************/
-void SysTick_Handler()
+void TIMER1_IRQHandler()
 {
-    g_ticks++;
+    g_ticks ++;
 
     if(g_ticks % 1000 == 0)
     {
@@ -38,15 +38,11 @@ int main(void)
 {
     CHIP_Init();
 
-    CMU_ClockEnable(cmuClock_GPIO, true);
-
-    /* Setup SysTick Timer for 1 msec interrupts  */
-    if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1) ;
-
     /* Initialize LED driver */
     GPIO_PinModeSet(LED_PORT, LED_PIN, gpioModePushPull, 0);
-
     GPIO_PinOutSet(LED_PORT, LED_PIN);
+
+    CMU_ClockEnable(cmuClock_TIMER1, true);
 
 
     for(;;)
