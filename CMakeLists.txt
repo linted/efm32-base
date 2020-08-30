@@ -50,6 +50,7 @@ add_subdirectory(${BASE_LOCATION}/emlib)
 add_subdirectory(${BASE_LOCATION}/device)
 add_subdirectory(${BASE_LOCATION}/protocol)
 add_subdirectory(${BASE_LOCATION}/hardware)
+add_subdirectory(${BASE_LOCATION}/emdrv)
 
 # This is normally set in efm32-base.cmake, but libraries may modify it so set
 # it after libraries/subdirectories have been added
@@ -71,7 +72,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} ${LIBS} cmsis device emlib)
+target_link_libraries(${PROJECT_NAME} ${LIBS} cmsis device emlib rtcdrv)
 
 # print_target_properties(${PROJECT_NAME})
 
