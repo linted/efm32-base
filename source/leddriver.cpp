@@ -6,7 +6,8 @@
 LEDDriver::LEDDriver()
     : I2CComponent()
 {
-    write_reg(0x02, 0x80);
+    // turn on the KTD
+    write_reg(0x02, 0xb8);
 }
 
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
