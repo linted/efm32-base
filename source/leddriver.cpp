@@ -7,7 +7,7 @@ LEDDriver::LEDDriver()
 
 }
 
-void LEDDriver::set_led(uint32_t led_num, bool val)
+void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 {
     I2C_TransferSeq_TypeDef seq;
     if (led_num >= LED_COUNT) {
@@ -18,14 +18,4 @@ void LEDDriver::set_led(uint32_t led_num, bool val)
 
 
     send(&seq);
-}
-
-void LEDDriver::toggle_led(uint32_t led_num)
-{
-    if (led_num >= LED_COUNT) {
-        return;
-    }
-
-    set_led(led_num, !this->led_status[led_num]);
-    this->led_status[led_num] = !this->led_status[led_num];
 }
