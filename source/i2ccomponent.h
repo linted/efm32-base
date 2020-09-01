@@ -11,7 +11,7 @@ public:
     I2CComponent();
 
 protected:
-    void send(I2C_TransferSeq_TypeDef *seq);
+    I2C_TransferReturn_TypeDef transfer(I2C_TransferSeq_TypeDef *seq);
 
 private:
     static bool i2c_enabled;

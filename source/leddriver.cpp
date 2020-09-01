@@ -16,6 +16,8 @@ LEDDriver::LEDDriver()
 {
     // turn on the KTD
     write_reg(0x02, KTD_ON);
+
+
 }
 
 LEDDriver::~LEDDriver()
@@ -25,8 +27,11 @@ LEDDriver::~LEDDriver()
 
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 {
+    uint8_t reg;
     select_color0();
     set_color0(r, g, b);
+
+    read_reg(0x01, &reg);
 }
 
 void LEDDriver::slow_off()
@@ -101,6 +106,30 @@ void LEDDriver::select_one(uint8_t reg, uint8_t data)
     write_reg(reg, data);
 }
 
+void LEDDriver::read_reg(uint8_t reg, uint8_t *val)
+{
+    uint8_t send_data[1] = {reg};
+    uint8_t recv_data[1];
+
+    I2C_TransferSeq_TypeDef seq = {
+        .addr = KTD2016_ADDR,
+        .flags = I2C_FLAG_WRITE_READ,
+        .buf = {
+            {
+                .data = send_data,
+                .len = 1
+            },
+            {
+                .data = recv_data,
+                .len = 1
+            }
+        }
+    };
+
+    I2C_TransferReturn_TypeDef ret = transfer(&seq);
+    *val = recv_data[0];
+}
+
 void LEDDriver::write_reg(uint8_t reg, uint8_t val)
 {
     uint8_t data[] = { reg, val };
@@ -117,5 +146,5 @@ void LEDDriver::write_reg(uint8_t reg, uint8_t val)
       }
     };
 
-    send(&seq);
+    I2C_TransferReturn_TypeDef ret = transfer(&seq);
 }

@@ -71,7 +71,7 @@ add_executable(${PROJECT_NAME}
         )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
-    -fno-exceptions -fno-rtti -Os)
+    -fno-exceptions -fno-rtti)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
