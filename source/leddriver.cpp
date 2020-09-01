@@ -2,11 +2,14 @@
 #include "i2cspm.h"
 
 #define KTD2016_ADDR 104
+#define KTD_ON 0xb8
+#define KTD_OFF 0x38
 
 LEDDriver::LEDDriver()
     : I2CComponent()
 {
-    write_reg(0x02, 0xb8);
+    // turn on the KTD
+    write_reg(0x02, KTD_ON);
 }
 
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
