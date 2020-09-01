@@ -10,6 +10,7 @@ class I2CComponent
 public:
     I2CComponent();
 
+protected:
     void send(I2C_TransferSeq_TypeDef *seq);
 
 private:

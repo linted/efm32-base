@@ -6,12 +6,15 @@
 LEDDriver::LEDDriver()
     : I2CComponent()
 {
-    write_reg(0x02, 0x80);
+    write_reg(0xb8, 0x80);
 }
 
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 {
-
+    write_reg(0x03, r);
+    write_reg(0x04, g);
+    write_reg(0x05, b);
+    write_reg(0x09, 0xf0);
 }
 
 void LEDDriver::write_reg(uint8_t reg, uint8_t val)
