@@ -11,6 +11,9 @@ public:
     LEDDriver();
 
     void set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b);
+
+private:
+    void write_reg(uint8_t reg, uint8_t val);
 };
 
 #endif // LEDDRIVER_H
