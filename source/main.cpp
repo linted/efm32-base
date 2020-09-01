@@ -1,30 +1,30 @@
 #include <stddef.h>
 #include "rtcdriver.h"
-#include "i2cspm.h"
+#include "leddriver.h"
 
-int i = 0;
+#include "em_emu.h"
+
+static LEDDriver led_driver;
 
 RTCDRV_TimerID_t id;
 
 void myCallback( RTCDRV_TimerID_t id, void * user )
 {
     (void) user; // unused argument in this example
-    i++;
-    if ( i < 10 ) {
-        // Restart timer
-        RTCDRV_StartTimer( id, rtcdrvTimerTypeOneshot, 100, myCallback, NULL );
-    }
+    (void) id;
+
+    led_driver.toggle_led(1);
 }
 
 int main( void )
 {
-    I2CSPM_Init_TypeDef i2cspm_init = I2CSPM_INIT_DEFAULT;
-
     RTCDRV_Init();
 
-    I2CSPM_Init(&i2cspm_init);
-
     RTCDRV_AllocateTimer( &id );
-    RTCDRV_StartTimer( id, rtcdrvTimerTypeOneshot, 100, myCallback, NULL );
+    RTCDRV_StartTimer( id, rtcdrvTimerTypePeriodic, 100, myCallback, NULL );
+
+    for (;;) {
+        EMU_EnterEM1();
+    }
     return 0;
 }

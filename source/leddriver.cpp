@@ -10,3 +10,8 @@ void LEDDriver::set_led(uint32_t led_num, bool val)
 {
 
 }
+
+void LEDDriver::toggle_led(uint32_t led_num)
+{
+
+}
