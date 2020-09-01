@@ -1,5 +1,6 @@
-#include "rtcdriver.h"
 #include <stddef.h>
+#include "rtcdriver.h"
+#include "i2cspm.h"
 
 int i = 0;
 
@@ -17,11 +18,13 @@ void myCallback( RTCDRV_TimerID_t id, void * user )
 
 int main( void )
 {
-    // Initialization of the RTCDRV driver.
+    I2CSPM_Init_TypeDef i2cspm_init = I2CSPM_INIT_DEFAULT;
+
     RTCDRV_Init();
-    // Reserve a timer.
+
+    I2CSPM_Init(&i2cspm_init);
+
     RTCDRV_AllocateTimer( &id );
-    // Start a oneshot timer with 100 millisecond timeout.
     RTCDRV_StartTimer( id, rtcdrvTimerTypeOneshot, 100, myCallback, NULL );
     return 0;
 }

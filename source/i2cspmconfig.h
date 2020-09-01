@@ -32,16 +32,17 @@
    is in use. If multiple interfaces are in use, define the peripheral setup
    inside the application in a I2CSPM_Init_TypeDef and then pass the initialization
    struct to I2CSPM_Init(). */
-#define I2CSPM_INIT_DEFAULT                                                    \
-  { I2C0,                       /* Use I2C instance 0 */                       \
-    gpioPortD,                  /* SCL port */                                 \
-    15,                         /* SCL pin */                                  \
-    gpioPortD,                  /* SDA port */                                 \
-    14,                         /* SDA pin */                                  \
-    3,                          /* Location */                                 \
-    0,                          /* Use currently configured reference clock */ \
-    I2C_FREQ_STANDARD_MAX,      /* Set to standard rate  */                    \
-    i2cClockHLRStandard,        /* Set to use 4:4 low/high duty cycle */       \
+#define I2CSPM_INIT_DEFAULT                                                   \
+  { I2C0,                      /* Use I2C instance 0 */                        \
+    gpioPortB,                 /* SCL port */                                  \
+    14,                        /* SCL pin */                                   \
+    gpioPortB,                 /* SDA port */                                  \
+    15,                        /* SDA pin */                                   \
+    6,                         /* Location of SCL */                           \
+    6,                         /* Location of SDA */                           \
+    0,                         /* Use currently configured reference clock */  \
+    I2C_FREQ_STANDARD_MAX,     /* Set to standard rate  */                     \
+    i2cClockHLRStandard,       /* Set to use 4:4 low/high duty cycle */        \
   }
 
 #define I2CSPM_TRANSFER_TIMEOUT 300000
