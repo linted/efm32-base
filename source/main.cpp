@@ -1,27 +1,37 @@
-#include "rtcdriver.h"
 #include <stddef.h>
+#include "rtcdriver.h"
+#include "leddriver.h"
 
-int i = 0;
+#include "em_emu.h"
 
-RTCDRV_TimerID_t id;
+static LEDDriver led_driver;
+
+static RTCDRV_TimerID_t id;
+static bool on = 0;
 
 void myCallback( RTCDRV_TimerID_t id, void * user )
 {
     (void) user; // unused argument in this example
-    i++;
-    if ( i < 10 ) {
-        // Restart timer
-        RTCDRV_StartTimer( id, rtcdrvTimerTypeOneshot, 100, myCallback, NULL );
+    (void) id;
+
+    if (on) {
+        led_driver.set_led(0, 100, 100, 0);
+        on = false;
+    } else {
+        led_driver.set_led(0, 0, 0, 0);
+        on = true;
     }
 }
 
 int main( void )
 {
-    // Initialization of the RTCDRV driver.
     RTCDRV_Init();
-    // Reserve a timer.
+
     RTCDRV_AllocateTimer( &id );
-    // Start a oneshot timer with 100 millisecond timeout.
-    RTCDRV_StartTimer( id, rtcdrvTimerTypeOneshot, 100, myCallback, NULL );
+    RTCDRV_StartTimer( id, rtcdrvTimerTypePeriodic, 100, myCallback, NULL );
+
+    for (;;) {
+        EMU_EnterEM1();
+    }
     return 0;
 }
