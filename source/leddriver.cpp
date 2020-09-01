@@ -37,7 +37,7 @@ void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 
     // construct an i2c message
     seq.addr = KTD2016_ADDR;
-    //seq.flags???
+    seq.flags = I2C_FLAG_WRITE;
     seq.buf->data = reinterpret_cast<uint8_t*>(&msg);
     seq.buf->len = sizeof(msg);
 
