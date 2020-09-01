@@ -10,3 +10,8 @@ I2CComponent::I2CComponent()
         i2c_enabled = true;
     }
 }
+
+void I2CComponent::send(I2C_TransferSeq_TypeDef *seq)
+{
+    I2CSPM_Transfer(I2C0, seq);
+}
