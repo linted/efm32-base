@@ -1,7 +1,7 @@
 #include "leddriver.h"
 #include "i2cspm.h"
 
-#define KTD2016_ADDR 104
+#define KTD2061_ADDR 0xd0
 #define KTD_ON 0xb8
 #define KTD_OFF 0x38
 
@@ -16,8 +16,6 @@ LEDDriver::LEDDriver()
 {
     // turn on the KTD
     write_reg(0x02, KTD_ON);
-
-
 }
 
 LEDDriver::~LEDDriver()
@@ -109,10 +107,10 @@ void LEDDriver::select_one(uint8_t reg, uint8_t data)
 void LEDDriver::read_reg(uint8_t reg, uint8_t *val)
 {
     uint8_t send_data[1] = {reg};
-    uint8_t recv_data[1];
+    uint8_t recv_data[1] = {0};
 
     I2C_TransferSeq_TypeDef seq = {
-        .addr = KTD2016_ADDR,
+        .addr = KTD2061_ADDR,
         .flags = I2C_FLAG_WRITE_READ,
         .buf = {
             {
@@ -135,7 +133,7 @@ void LEDDriver::write_reg(uint8_t reg, uint8_t val)
     uint8_t data[] = { reg, val };
 
     I2C_TransferSeq_TypeDef seq = {
-      .addr = KTD2016_ADDR,
+      .addr = KTD2061_ADDR,
       .flags = I2C_FLAG_WRITE,
       .buf = {
         {

@@ -18,6 +18,9 @@
 #ifndef __SILICON_LABS_I2CSPM_CONFIG_H__
 #define __SILICON_LABS_I2CSPM_CONFIG_H__
 
+#include "em_device.h"
+#include "em_i2c.h"
+
 /***************************************************************************//**
  * @addtogroup Drivers
  * @{
@@ -35,9 +38,9 @@
 #define I2CSPM_INIT_DEFAULT                                                   \
   { I2C0,                      /* Use I2C instance 0 */                        \
     gpioPortB,                 /* SCL port */                                  \
-    14,                        /* SCL pin */                                   \
+    12,                        /* SCL pin */                                   \
     gpioPortB,                 /* SDA port */                                  \
-    15,                        /* SDA pin */                                   \
+    11,                        /* SDA pin */                                   \
     6,                         /* Location of SCL */                           \
     6,                         /* Location of SDA */                           \
     0,                         /* Use currently configured reference clock */  \
