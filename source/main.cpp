@@ -2,6 +2,8 @@
 #include "rtcdriver.h"
 #include "leddriver.h"
 
+#include "native_gecko.h"
+
 #include "em_chip.h"
 #include "em_emu.h"
 #include "em_cmu.h"
@@ -22,13 +24,17 @@ void myCallback( RTCDRV_TimerID_t id, void * user )
 
 int main( void )
 {
+    gecko_configuration_t gecko_config;
+    memset(&gecko_config, 0, sizeof(gecko_config));
+
+    gecko_init(&gecko_config);
+
+
     CHIP_Init();
     RTCDRV_Init();
 
     LEDDriver _main_led_driver;
     led_driver = &_main_led_driver;
-
-    CMU_ClockEnable(cmuClock_GPIO, true);
 
     RTCDRV_AllocateTimer( &id );
     RTCDRV_StartTimer( id, rtcdrvTimerTypePeriodic, 5000, myCallback, NULL );
@@ -38,10 +44,10 @@ int main( void )
 
         if (triggered) {
             if (on) {
-                led_driver->set_led(0, 100, 100, 0);
+                led_driver->global_on(false);
                 on = false;
             } else {
-                led_driver->set_led(0, 0, 0, 0);
+                led_driver->global_off(false);
                 on = true;
             }
             triggered = false;

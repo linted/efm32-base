@@ -13,12 +13,14 @@ public:
 
     void set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b);
 
+    void global_on(bool fade);
+    void global_off(bool fade);
+
 
 private:
     void slow_off();
     void global_reset();
-    void global_on(bool fade);
-    void global_off(bool fade);
+
     void set_color0(uint8_t r, uint8_t g, uint8_t b);
     void set_color1(uint8_t r, uint8_t g, uint8_t b);
     void select_all(uint8_t isel);
