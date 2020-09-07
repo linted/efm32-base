@@ -24,14 +24,15 @@ void myCallback( RTCDRV_TimerID_t id, void * user )
 
 int main( void )
 {
-    gecko_configuration_t gecko_config;
-    memset(&gecko_config, 0, sizeof(gecko_config));
-
-    gecko_init(&gecko_config);
-
-
-    CHIP_Init();
+    CHIP_Init(); // THIS MUST GO FIRST
     RTCDRV_Init();
+    CMU_ClockEnable(cmuClock_GPIO, true); // Enable this so that we can write
+
+    // gecko_configuration_t gecko_config;
+    // memset(&gecko_config, 0, sizeof(gecko_config));
+
+    // gecko_init(&gecko_config);
+    
 
     LEDDriver _main_led_driver;
     led_driver = &_main_led_driver;
