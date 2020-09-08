@@ -64,10 +64,6 @@ include_directories(${BASE_LOCATION}/include)
 # Generate executable and link
 add_executable(${PROJECT_NAME}
         source/main.cpp
-        source/leddriver.cpp
-        source/i2ccomponent.cpp
-
-        source/i2cspm.c
         )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
