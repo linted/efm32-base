@@ -8,6 +8,8 @@
 #include "em_emu.h"
 #include "em_cmu.h"
 
+#define MAX_CONNECTIONS 1
+
 static LEDDriver *led_driver;
 
 static RTCDRV_TimerID_t id;
@@ -22,16 +24,28 @@ void myCallback( RTCDRV_TimerID_t id, void * user )
     triggered = true;
 }
 
+static uint8_t bluetooth_stack_heap[DEFAULT_BLUETOOTH_HEAP(MAX_CONNECTIONS)];
+static gecko_configuration_t g_gecko_config = {
+    .config_flags = 0,
+    .sleep.flags = SLEEP_FLAGS_DEEP_SLEEP_ENABLE,
+    .bluetooth.max_connections = MAX_CONNECTIONS,
+    .bluetooth.heap = bluetooth_stack_heap,
+    .bluetooth.heap_size = sizeof(bluetooth_stack_heap),
+    .bluetooth.sleep_clock_accuracy = 100, //ppm
+    .gattdb=&bg_gattdb_data,
+    .ota.flags = 0,
+    .ota.device_name_len = 3,
+    .ota.device_name_ptr = "OTA",
+    .max_timers = 4,
+};
+
 int main( void )
 {
     CHIP_Init(); // THIS MUST GO FIRST
     RTCDRV_Init();
     CMU_ClockEnable(cmuClock_GPIO, true); // Enable this so that we can write
 
-    // gecko_configuration_t gecko_config;
-    // memset(&gecko_config, 0, sizeof(gecko_config));
-
-    // gecko_init(&gecko_config);
+    gecko_init(&g_gecko_config);
     
 
     LEDDriver _main_led_driver;
