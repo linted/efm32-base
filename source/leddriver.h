@@ -15,7 +15,9 @@ public:
 
     void global_on(bool fade);
     void global_off(bool fade);
-
+    void select_color0();
+    void select_color1();
+    void select_all(uint8_t isel);
 
 private:
     void slow_off();
@@ -23,10 +25,8 @@ private:
 
     void set_color0(uint8_t r, uint8_t g, uint8_t b);
     void set_color1(uint8_t r, uint8_t g, uint8_t b);
-    void select_all(uint8_t isel);
+
     void select_off();
-    void select_color0();
-    void select_color1();
     void select_colors(uint8_t isela12, uint8_t isela34, uint8_t iselb12,
                        uint8_t iselb34, uint8_t iselc12, uint8_t iselc34);
     void select_one(uint8_t reg, uint8_t data);

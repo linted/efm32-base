@@ -26,10 +26,12 @@ LEDDriver::~LEDDriver()
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 {
     uint8_t reg;
-    select_color0();
-    set_color0(r, g, b);
-
-    read_reg(0x01, &reg);
+    if (led_num == 0x00){
+        //select_color0();
+        set_color0(r, g, b);
+    } else if (led_num == 0x01) {
+        set_color1(r, g, b);
+    }
 }
 
 void LEDDriver::slow_off()
