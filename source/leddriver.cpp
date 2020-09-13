@@ -148,3 +148,31 @@ void LEDDriver::write_reg(uint8_t reg, uint8_t val)
 
     I2C_TransferReturn_TypeDef ret = transfer(&seq);
 }
+
+
+void LEDDriver::do_single_chase() 
+{
+    // TODO: is it easier to just write the entire array every time? or would that be super slow?
+    // if we are on a new register, or starting for the first time
+    if ((this->single_chase_state % 2) == 0) 
+    {
+        // Loop through the current state
+        for (int i =0; i < sizeof(this->led_state); i++)
+        {
+            // check to see if any lights are on
+            if ((this->led_state[i] & 0x88) !=0)
+            {
+                // turn then off if so
+                this->led_state[i] &= 0x77;
+                this->write_reg(0x9 + i, this->led_state[i]);
+            }
+        }
+    }
+
+    // MaTh Is FuN I pRoMiS 
+    uint8_t current_register = ((this->single_chase_state - (1*(this->single_chase_state%2)))/2);
+    this->led_state[current_register] = this->led_state[current_register] & (((this->single_chase_state % 2) == 0) ? 0xf7 : 0x7f);
+    this->write_reg(current_register, this->led_state[current_register]);
+
+    this->single_chase_state = (this->single_chase_state + 1) %  (sizeof(this->led_state) * 2)
+}
