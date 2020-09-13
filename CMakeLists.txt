@@ -64,21 +64,16 @@ include_directories(${BASE_LOCATION}/include)
 # Generate executable and link
 add_executable(${PROJECT_NAME}
         source/main.cpp
-<<<<<<< HEAD
         source/leddriver.cpp
         source/i2ccomponent.cpp
         source/gatt_db.c
         source/i2cspm.c
         source/globals.c
-=======
         source/common_alloc.cpp
         source/bgmdevice.cpp
         source/i2cdriver.cpp
         source/i2cdevice.cpp
         source/i2csequence.cpp
-
-        source/leddriver.cpp
->>>>>>> dev/framework
         )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
