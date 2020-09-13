@@ -21,8 +21,8 @@ public:
     void do_single_chase();
 
 private:
-    uint8 led_state[6] = {0};
-    uint8 single_chase_state = 0;
+    uint8_t led_state[6] = {0};
+    uint8_t single_chase_state = 0;
     void slow_off();
     void global_reset();
 
