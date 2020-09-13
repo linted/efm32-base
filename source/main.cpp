@@ -3,10 +3,14 @@
 #include "leddriver.h"
 
 #include "native_gecko.h"
+#include "gecko_configuration.h"
 
 #include "em_chip.h"
 #include "em_emu.h"
 #include "em_cmu.h"
+
+#include "gatt_db.h"
+#include "globals.h"
 
 #define MAX_CONNECTIONS 1
 
@@ -24,20 +28,6 @@ void myCallback( RTCDRV_TimerID_t id, void * user )
     triggered = true;
 }
 
-static uint8_t bluetooth_stack_heap[DEFAULT_BLUETOOTH_HEAP(MAX_CONNECTIONS)];
-static gecko_configuration_t g_gecko_config = {
-    .config_flags = 0,
-    .sleep.flags = SLEEP_FLAGS_DEEP_SLEEP_ENABLE,
-    .bluetooth.max_connections = MAX_CONNECTIONS,
-    .bluetooth.heap = bluetooth_stack_heap,
-    .bluetooth.heap_size = sizeof(bluetooth_stack_heap),
-    .bluetooth.sleep_clock_accuracy = 100, //ppm
-    .gattdb=&bg_gattdb_data,
-    .ota.flags = 0,
-    .ota.device_name_len = 3,
-    .ota.device_name_ptr = "OTA",
-    .max_timers = 4,
-};
 
 int main( void )
 {
