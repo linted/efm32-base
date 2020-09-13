@@ -65,7 +65,6 @@ include_directories(${BASE_LOCATION}/include)
 add_executable(${PROJECT_NAME}
         source/main.cpp
         source/leddriver.cpp
-        source/i2ccomponent.cpp
         source/gatt_db.c
         source/i2cspm.c
         source/globals.c
