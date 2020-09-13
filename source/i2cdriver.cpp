@@ -29,9 +29,30 @@ void Driver::trigger()
 
 void Driver::process()
 {
-    if (sequence_queue.empty()) {
-        triggered = false;
+    if (!sequence_queue.empty()) {
+        Sequence &curr = sequence_queue.front();
+        I2C_TransferReturn_TypeDef t_ret;
+
+        switch (curr.transfer_state) {
+        case i2c::Sequence::STATE_BUILDING:
+            // This is an error condition
+            return;
+        case i2c::Sequence::STATE_PENDING:
+            t_ret = I2C_TransferInit(I2C0, curr.build());
+            curr.transfer_state = i2c::Sequence::STATE_TRANSFER;
+            break;
+        case i2c::Sequence::STATE_TRANSFER:
+            t_ret = I2C_Transfer(I2C0);
+            break;
+        }
+
+        if (t_ret != i2cTransferInProgress) {
+            sequence_queue.pop_front();
+        }
     }
+
+    triggered = false;
+    I2C_IntClear(I2C0, ~0);
 }
 
 bool Driver::needs_processing()
@@ -83,6 +104,8 @@ static void init_i2c()
     i2cInit.clhr = i2cClockHLRStandard;
 
     I2C_Init(I2C0, &i2cInit);
+
+
 }
 
 }

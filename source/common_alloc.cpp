@@ -59,4 +59,14 @@ extern "C" void __cxa_pure_virtual()
     while (true) {}
 }
 
+extern "C" void _kill()
+{
+    while (true) {}
+}
+
+extern "C" int _getpid()
+{
+    return 1;
+}
+
 #endif // COMMON_ALLOC_CPP

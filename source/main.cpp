@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include "rtcdriver.h"
 #include "leddriver.h"
+#include "i2cdriver.h"
 
 #include "native_gecko.h"
 
@@ -86,6 +87,10 @@ int main( void )
                 on = true;
             }
             triggered = false;
+        }
+
+        if (i2c::Driver::instance()->needs_processing()) {
+            i2c::Driver::instance()->process();
         }
     }
     return 0;
