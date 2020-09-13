@@ -64,15 +64,30 @@ include_directories(${BASE_LOCATION}/include)
 # Generate executable and link
 add_executable(${PROJECT_NAME}
         source/main.cpp
+<<<<<<< HEAD
         source/leddriver.cpp
         source/i2ccomponent.cpp
         source/gatt_db.c
         source/i2cspm.c
         source/globals.c
+=======
+        source/common_alloc.cpp
+        source/bgmdevice.cpp
+        source/i2cdriver.cpp
+        source/i2cdevice.cpp
+        source/i2csequence.cpp
+
+        source/leddriver.cpp
+>>>>>>> dev/framework
         )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
-    -fno-exceptions -fno-rtti)
+    -fno-exceptions -fno-rtti -fno-unwind-tables
+    -Wall -Wextra -Werror -Wno-register)
+
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES
+    CXX_STANDARD 17)
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
