@@ -14,20 +14,20 @@ static RTCDRV_TimerID_t id;
 static bool on = false;
 static bool triggered = false;
 
-static const gecko_configuration_t g_gecko_config = {
-  .config_flags = 0,
-  .sleep.flags = SLEEP_FLAGS_DEEP_SLEEP_ENABLE,
-  .bluetooth.max_connections = MAX_CONNECTIONS,
-  .bluetooth.heap = g_bluetooth_heap,
-  .bluetooth.heap_size = sizeof(g_bluetooth_heap),
-  .bluetooth.sleep_clock_accuracy = 100,
-  .gattdb = &bg_gattdb_data,
-  .ota.flags = 0,
-  .ota.device_name_len = 11,
-  .ota.device_name_ptr = "BLETALK_OTA",
-  .pa.config_enable = 1,
-  .pa.input = GECKO_RADIO_PA_INPUT_DCDC,
-};
+// static const gecko_configuration_t g_gecko_config = {
+//   .config_flags = 0,
+//   .sleep.flags = SLEEP_FLAGS_DEEP_SLEEP_ENABLE,
+//   .bluetooth.max_connections = MAX_CONNECTIONS,
+//   .bluetooth.heap = g_bluetooth_heap,
+//   .bluetooth.heap_size = sizeof(g_bluetooth_heap),
+//   .bluetooth.sleep_clock_accuracy = 100,
+//   .gattdb = &bg_gattdb_data,
+//   .ota.flags = 0,
+//   .ota.device_name_len = 11,
+//   .ota.device_name_ptr = "BLETALK_OTA",
+//   .pa.config_enable = 1,
+//   .pa.input = GECKO_RADIO_PA_INPUT_DCDC,
+// };
 
 void myCallback( RTCDRV_TimerID_t id, void * user )
 {

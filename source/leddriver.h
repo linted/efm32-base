@@ -18,8 +18,11 @@ public:
     void select_color0();
     void select_color1();
     void select_all(uint8_t isel);
+    void do_single_chase();
 
 private:
+    uint8 led_state[6] = {0};
+    uint8 single_chase_state = 0;
     void slow_off();
     void global_reset();
 
@@ -32,8 +35,8 @@ private:
     void select_one(uint8_t reg, uint8_t data);
     void select_one_clear(uint8_t reg, uint8_t data);
 
-    void write_reg(uint8_t reg, uint8_t val);
-    void read_reg(uint8_t reg, uint8_t *val);
+    bool write_reg(uint8_t reg, uint8_t val);
+    bool read_reg(uint8_t reg, uint8_t *val);
 };
 
 #endif // LEDDRIVER_H

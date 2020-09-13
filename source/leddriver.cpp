@@ -25,7 +25,6 @@ LEDDriver::~LEDDriver()
 
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 {
-    uint8_t reg;
     if (led_num == 0x00){
         //select_color0();
         set_color0(r, g, b);
@@ -106,7 +105,7 @@ void LEDDriver::select_one(uint8_t reg, uint8_t data)
     write_reg(reg, data);
 }
 
-void LEDDriver::read_reg(uint8_t reg, uint8_t *val)
+bool LEDDriver::read_reg(uint8_t reg, uint8_t *val)
 {
     uint8_t send_data[1] = {reg};
     uint8_t recv_data[1] = {0};
@@ -127,10 +126,16 @@ void LEDDriver::read_reg(uint8_t reg, uint8_t *val)
     };
 
     I2C_TransferReturn_TypeDef ret = transfer(&seq);
+    if (ret == i2cTransferInProgress)
+    {
+        *val = 0;
+        return false;
+    }
     *val = recv_data[0];
+    return true
 }
 
-void LEDDriver::write_reg(uint8_t reg, uint8_t val)
+bool LEDDriver::write_reg(uint8_t reg, uint8_t val)
 {
     uint8_t data[] = { reg, val };
 
@@ -147,6 +152,11 @@ void LEDDriver::write_reg(uint8_t reg, uint8_t val)
     };
 
     I2C_TransferReturn_TypeDef ret = transfer(&seq);
+    if (ret == i2cTransferInProgress)
+    {
+        return false;
+    }
+    return true;
 }
 
 
