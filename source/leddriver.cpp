@@ -181,7 +181,7 @@ void LEDDriver::do_single_chase()
 
     // MaTh Is FuN I pRoMiS 
     uint8_t current_register = ((this->single_chase_state - (1*(this->single_chase_state%2)))/2);
-    this->led_state[current_register] = this->led_state[current_register] & (((this->single_chase_state % 2) == 0) ? 0xf7 : 0x7f);
+    this->led_state[current_register] = (this->led_state[current_register] & 0x77) | (((this->single_chase_state % 2) == 0) ? 0x80 : 0x08);
     this->write_reg(current_register, this->led_state[current_register]);
 
     this->single_chase_state = (this->single_chase_state + 1) %  (sizeof(this->led_state) * 2);

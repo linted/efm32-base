@@ -11,7 +11,6 @@
 static LEDDriver *led_driver;
 
 static RTCDRV_TimerID_t id;
-static bool on = false;
 static bool triggered = false;
 
 // static const gecko_configuration_t g_gecko_config = {
@@ -51,8 +50,8 @@ int main( void )
 
     LEDDriver _main_led_driver;
     led_driver = &_main_led_driver;
-    led_driver->set_led(0x0, 0x00, 0x00, 0x00);
-    led_driver->set_led(0x1, 0xff, 0xff, 0xff);
+    led_driver->set_led(0x1, 0x00, 0x00, 0x00);
+    led_driver->set_led(0x0, 0xff, 0xff, 0xff);
 
 
     RTCDRV_AllocateTimer( &id );
@@ -63,26 +62,7 @@ int main( void )
         EMU_EnterEM1();
 
         if (triggered) {
-            if (on) {
-                if (blah == 0) {
-                    led_driver->select_all(204);
-                    //led_driver->select_color0();
-                    blah = 1;
-                } else if (blah == 1) {
-                    //led_driver->select_color0();
-                    led_driver->select_all(170);
-                    blah = 2;
-                } else {
-                    //led_driver->select_color0();
-                    led_driver->select_all(153);
-                    blah = 0;
-                }
-                led_driver->global_on(true);
-                on = false;
-            } else {
-                led_driver->global_off(true);
-                on = true;
-            }
+            led_driver->do_single_chase();
             triggered = false;
         }
     }
