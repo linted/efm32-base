@@ -1,5 +1,6 @@
 #include "leddriver.h"
 #include "i2cspm.h"
+#include "i2cdriver.h"
 
 #define KTD2061_ADDR 0xd0
 #define KTD_ON 0xb8
@@ -11,8 +12,8 @@ constexpr uint8_t ce_temp = 3;
 constexpr uint8_t on = en_mode*64 + be_en*32 + ce_temp*8;
 constexpr uint8_t off = be_en*32 + ce_temp*8;
 
-LEDDriver::LEDDriver()
-    : I2CComponent()
+LEDDriver::LEDDriver() :
+    i2c::Device()
 {
     // turn on the KTD
     write_reg(0x02, KTD_ON);
@@ -25,9 +26,7 @@ LEDDriver::~LEDDriver()
 
 void LEDDriver::set_led(uint32_t led_num, uint8_t r, uint8_t g, uint8_t b)
 {
-    uint8_t reg;
     if (led_num == 0x00){
-        //select_color0();
         set_color0(r, g, b);
     } else if (led_num == 0x01) {
         set_color1(r, g, b);
@@ -106,45 +105,13 @@ void LEDDriver::select_one(uint8_t reg, uint8_t data)
     write_reg(reg, data);
 }
 
-void LEDDriver::read_reg(uint8_t reg, uint8_t *val)
-{
-    uint8_t send_data[1] = {reg};
-    uint8_t recv_data[1] = {0};
-
-    I2C_TransferSeq_TypeDef seq = {
-        .addr = KTD2061_ADDR,
-        .flags = I2C_FLAG_WRITE_READ,
-        .buf = {
-            {
-                .data = send_data,
-                .len = 1
-            },
-            {
-                .data = recv_data,
-                .len = 1
-            }
-        }
-    };
-
-    I2C_TransferReturn_TypeDef ret = transfer(&seq);
-    *val = recv_data[0];
-}
-
 void LEDDriver::write_reg(uint8_t reg, uint8_t val)
 {
-    uint8_t data[] = { reg, val };
+    i2c::Sequence seq;
 
-    I2C_TransferSeq_TypeDef seq = {
-      .addr = KTD2061_ADDR,
-      .flags = I2C_FLAG_WRITE,
-      .buf = {
-        {
-          .data = data,
-          .len = 2
-        },
-        {0, 0}
-      }
-    };
+    seq.set_addr(KTD2061_ADDR);
+    seq.output_buf() = { reg, val };
+    seq.set_flags(I2C_FLAG_WRITE);
 
-    I2C_TransferReturn_TypeDef ret = transfer(&seq);
+    transfer(seq);
 }

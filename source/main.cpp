@@ -14,6 +14,7 @@ static RTCDRV_TimerID_t id;
 static bool on = false;
 static bool triggered = false;
 
+#if 0
 static const gecko_configuration_t g_gecko_config = {
   .config_flags = 0,
   .sleep.flags = SLEEP_FLAGS_DEEP_SLEEP_ENABLE,
@@ -28,6 +29,7 @@ static const gecko_configuration_t g_gecko_config = {
   .pa.config_enable = 1,
   .pa.input = GECKO_RADIO_PA_INPUT_DCDC,
 };
+#endif
 
 void myCallback( RTCDRV_TimerID_t id, void * user )
 {
