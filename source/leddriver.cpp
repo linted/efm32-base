@@ -132,7 +132,7 @@ bool LEDDriver::read_reg(uint8_t reg, uint8_t *val)
         return false;
     }
     *val = recv_data[0];
-    return true
+    return true;
 }
 
 bool LEDDriver::write_reg(uint8_t reg, uint8_t val)
@@ -184,5 +184,5 @@ void LEDDriver::do_single_chase()
     this->led_state[current_register] = this->led_state[current_register] & (((this->single_chase_state % 2) == 0) ? 0xf7 : 0x7f);
     this->write_reg(current_register, this->led_state[current_register]);
 
-    this->single_chase_state = (this->single_chase_state + 1) %  (sizeof(this->led_state) * 2)
+    this->single_chase_state = (this->single_chase_state + 1) %  (sizeof(this->led_state) * 2);
 }
