@@ -63,7 +63,7 @@ int main( void )
 
 
     RTCDRV_AllocateTimer( &id );
-    RTCDRV_StartTimer( id, rtcdrvTimerTypePeriodic, 5000, myCallback, NULL );
+    RTCDRV_StartTimer( id, rtcdrvTimerTypePeriodic, 500, myCallback, NULL );
 
     int blah = 0;
     for (;;) {
@@ -91,10 +91,6 @@ int main( void )
                 on = true;
             }
             triggered = false;
-        }
-
-        if (i2c::Driver::instance()->needs_processing()) {
-            i2c::Driver::instance()->process();
         }
     }
     return 0;

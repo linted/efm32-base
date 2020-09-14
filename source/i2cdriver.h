@@ -6,27 +6,21 @@
 
 #include "bgmdevice.h"
 #include "i2csequence.h"
+#include "i2cspm.h"
 
 namespace i2c {
 
-class Driver : public BgmDevice
+class Driver
 {
 public:
     static Driver *instance();
 
-    void trigger();
-    virtual void process() override;
-    virtual bool needs_processing() override;
-    void enqueue(Sequence &seq);
+    void transfer(Sequence &seq);
 
 private:
     Driver();
 
-    std::list<Sequence> sequence_queue;
-    bool triggered;
-
-protected:
-
+    I2CSPM_Init_TypeDef init;
 };
 
 }

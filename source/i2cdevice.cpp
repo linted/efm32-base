@@ -10,7 +10,7 @@ Device::Device()
 
 void Device::transfer(Sequence &seq)
 {
-    Driver::instance()->enqueue(seq);
+    Driver::instance()->transfer(seq);
 }
 
 } // namespace i2c

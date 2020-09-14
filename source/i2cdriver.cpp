@@ -4,16 +4,11 @@
 #include "em_gpio.h"
 #include "em_cmu.h"
 
+#include "i2cspm.h"
+
 namespace i2c {
 
-extern "C" {
-void I2C0_IRQHandler(void)
-{
-    Driver::instance()->trigger();
-}
-}
-
-static void init_i2c();
+// static void init_i2c();
 
 Driver *Driver::instance()
 {
@@ -22,61 +17,18 @@ Driver *Driver::instance()
     return &d;
 }
 
-void Driver::trigger()
-{
-    triggered = true;
-}
-
-void Driver::process()
-{
-    if (!sequence_queue.empty()) {
-        Sequence &curr = sequence_queue.front();
-        I2C_TransferReturn_TypeDef t_ret;
-
-        switch (curr.transfer_state) {
-        case i2c::Sequence::STATE_BUILDING:
-            // This is an error condition
-            return;
-        case i2c::Sequence::STATE_PENDING:
-            t_ret = I2C_TransferInit(I2C0, curr.build());
-            curr.transfer_state = i2c::Sequence::STATE_TRANSFER;
-            break;
-        case i2c::Sequence::STATE_TRANSFER:
-            t_ret = I2C_Transfer(I2C0);
-            break;
-        }
-
-        if (t_ret != i2cTransferInProgress) {
-            sequence_queue.pop_front();
-        }
-    }
-
-    triggered = false;
-    I2C_IntClear(I2C0, ~0);
-}
-
-bool Driver::needs_processing()
-{
-    return triggered;
-}
-
 Driver::Driver()
 {
-    init_i2c();
+    init = I2CSPM_INIT_DEFAULT;
+    I2CSPM_Init(&init);
 }
 
-void Driver::enqueue(Sequence &seq)
+void Driver::transfer(Sequence &seq)
 {
-    Sequence s = seq;
-    s.transfer_state = Sequence::STATE_PENDING;
-
-    if (sequence_queue.empty()) {
-        triggered = true;
-    }
-
-    sequence_queue.push_back(s);
+    I2CSPM_Transfer(I2C0, seq.build());
 }
 
+#if 0
 static void init_i2c()
 {
     int i;
@@ -107,5 +59,5 @@ static void init_i2c()
 
 
 }
-
+#endif
 }
