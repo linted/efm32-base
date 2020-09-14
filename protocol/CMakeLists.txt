@@ -24,6 +24,7 @@ macro(import_lib target_name file)
         PROPERTIES
         IMPORTED_LOCATION ${file}
     )
+    target_link_libraries(${target_name} INTERFACE emlib)
     target_link_libraries(${PROJECT_NAME} INTERFACE ${target_name})
 endmacro()
 
@@ -37,7 +38,7 @@ import_lib(libnvm3 ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/libnv
 import_lib(librail ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth/lib/EFR32BG1B/GCC/librail.a)
 
 
-target_link_libraries(libbluetooth INTERFACE emlib)
+target_link_libraries(libbluetooth INTERFACE sleep)
 
 target_include_directories(${PROJECT_NAME} INTERFACE
         bluetooth/ble_stack/inc/common

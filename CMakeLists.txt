@@ -95,7 +95,7 @@ set_target_properties(${PROJECT_NAME}
 
 efm32_configure_linker_addresses(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} ${LIBS} cmsis device emlib rtcdrv)
+target_link_libraries(${PROJECT_NAME} ${LIBS} cmsis device emlib rtcdrv )
 
 # print_target_properties(${PROJECT_NAME})
 
