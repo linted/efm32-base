@@ -10,12 +10,14 @@
 
 namespace i2c {
 
-class Driver
+class Driver : public BgmDevice
 {
 public:
     static Driver *instance();
 
     void transfer(Sequence &seq);
+
+
 
 private:
     Driver();

@@ -3,10 +3,9 @@
 
 class BgmDevice
 {
-public:
-    virtual void process() = 0;
-    virtual bool needs_processing() = 0;
-
+public:    
+    virtual operator bool();
+    virtual void operator ()();
 };
 
 #endif // BGMDEVICE_H

@@ -17,7 +17,8 @@ Driver *Driver::instance()
     return &d;
 }
 
-Driver::Driver()
+Driver::Driver() :
+    BgmDevice()
 {
     init = I2CSPM_INIT_DEFAULT;
     I2CSPM_Init(&init);
