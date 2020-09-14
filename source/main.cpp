@@ -36,6 +36,7 @@ int main( void )
     RTCDRV_Init();
     CMU_ClockEnable(cmuClock_GPIO, true); // Enable this so that we can write
 
+
     gecko_init(&g_gecko_config);
     
 
