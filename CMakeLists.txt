@@ -62,22 +62,32 @@ set(CMAKE_EXE_LINKER_FLAGS "${COMMON_DEFINITIONS} -Xlinker -T${LINKER_SCRIPT} -W
 include_directories(${BASE_LOCATION}/include)
 
 # Generate executable and link
-add_executable(${PROJECT_NAME}
-        source/main.cpp
-        source/leddriver.cpp
-        source/gatt_db.c
-        source/i2cspm.c
-        source/globals.c
-        source/common_alloc.cpp
-        source/bgmdevice.cpp
-        source/i2cdriver.cpp
-        source/i2cdevice.cpp
-        source/i2csequence.cpp
-        )
 
-target_compile_options(${PROJECT_NAME} PRIVATE
-    -fno-exceptions -fno-rtti -fno-unwind-tables
-    -Wall -Wextra -Werror -Wno-register)
+set(C_SRCS
+    source/gatt_db.c
+    source/i2cspm.c
+    source/globals.c)
+
+set(CXX_SRCS
+    source/main.cpp
+    source/leddriver.cpp
+    source/common_alloc.cpp
+    source/bgmdevice.cpp
+    source/i2cdriver.cpp
+    source/i2cdevice.cpp
+    source/i2csequence.cpp)
+
+set_source_files_properties(${CXX_SRCS}
+    PROPERTIES
+    COMPILE_FLAGS "-fno-exceptions -fno-rtti -fno-unwind-tables -Wno-register")
+
+add_executable(${PROJECT_NAME}
+    ${C_SRCS}
+    ${CXX_SRCS})
+
+target_compile_options(${PROJECT_NAME} PRIVATE    
+    -Wall -Wextra -Werror
+    -Wno-type-limits)
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
