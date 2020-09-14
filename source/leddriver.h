@@ -1,11 +1,11 @@
 #ifndef LEDDRIVER_H
 #define LEDDRIVER_H
 
-#include "i2ccomponent.h"
+#include "i2cdevice.h"
 
 #define LED_COUNT 12
 
-class LEDDriver : public I2CComponent
+class LEDDriver : public i2c::Device
 {
 public:
     LEDDriver();
@@ -35,8 +35,7 @@ private:
     void select_one(uint8_t reg, uint8_t data);
     void select_one_clear(uint8_t reg, uint8_t data);
 
-    bool write_reg(uint8_t reg, uint8_t val);
-    bool read_reg(uint8_t reg, uint8_t *val);
+    void write_reg(uint8_t reg, uint8_t val);
 };
 
 #endif // LEDDRIVER_H
