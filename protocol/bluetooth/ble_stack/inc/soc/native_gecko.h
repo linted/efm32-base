@@ -3113,16 +3113,16 @@ static inline errorcode_t gecko_init(const gecko_configuration_t *config)
         return err;
     }
 
-    gecko_bgapi_class_dfu_init();
+    //gecko_bgapi_class_dfu_init();
     gecko_bgapi_class_system_init();
     gecko_bgapi_class_le_gap_init();
     gecko_bgapi_class_le_connection_init();
     gecko_bgapi_class_gatt_init();
     gecko_bgapi_class_gatt_server_init();
     gecko_bgapi_class_hardware_init();
-    gecko_bgapi_class_flash_init();
-    gecko_bgapi_class_test_init();
-    gecko_bgapi_class_sm_init();
+    //gecko_bgapi_class_flash_init();
+    //gecko_bgapi_class_test_init();
+    //gecko_bgapi_class_sm_init();
 
     // Initialize coexistence interface. Parameters are taken from HAL config.
     gecko_initCoexHAL();

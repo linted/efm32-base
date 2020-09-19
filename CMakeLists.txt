@@ -83,7 +83,8 @@ set_source_files_properties(${CXX_SRCS}
 
 add_executable(${PROJECT_NAME}
     ${C_SRCS}
-    ${CXX_SRCS})
+    ${CXX_SRCS}
+    )
 
 target_compile_options(${PROJECT_NAME} PRIVATE    
     -Wall -Wextra -Werror
