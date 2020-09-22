@@ -37,7 +37,7 @@ int main( void )
     CMU_ClockEnable(cmuClock_GPIO, true); // Enable this so that we can write
 
 
-    //gecko_init(&g_gecko_config);
+    gecko_init(&g_gecko_config);
     
     LEDDriver _main_led_driver;
     led_driver = &_main_led_driver;

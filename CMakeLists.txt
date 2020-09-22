@@ -25,25 +25,11 @@ include(${BASE_LOCATION}/toolchain/arm-gcc.cmake)
 
 # Configure project and languages
 project(badge-firmware C CXX ASM)
-set(DEVICE BGM113A256V2)
+set(DEVICE EFR32BG1B132F256GM32)
 set(FLASH_ORIGIN 0x00000000)
 set(FLASH_LENGTH 0x40000)
 set(RAM_ORIGIN 0x20000000)
 set(RAM_LENGTH 0x7bff)
-
-## ${DEVICE} sets the target specific model name
-#if (NOT DEVICE)
-#    set(DEVICE EFM32G210F128)
-#    # set(DEVICE BGM13P22F512GA)
-#    # set(BOARD BRD4306A)
-#    # set(BLE_LIB EFR32BG13P)
-#endif ()
-
-# ${JLINK_DEVICE} device model setting specifically for JLink. (Defaults to ${DEVICE} when not set)
-# set(JLINK_DEVICE EFM32TG11BXXXF128)
-
-# When ${JLINK_SERVER_IP} is set, JLink will try to connect over IP to a JLink server
-# set(JLINK_SERVER_IP 127.0.0.1)
 
 # Set build
 if (NOT CMAKE_BUILD_TYPE)
@@ -98,6 +84,8 @@ set_source_files_properties(${CXX_SRCS}
 add_executable(${PROJECT_NAME}
     ${C_SRCS}
     ${CXX_SRCS}
+
+    source/bootloader_entry.s
     )
 
 target_compile_options(${PROJECT_NAME} PRIVATE    
@@ -112,7 +100,7 @@ efm32_configure_linker_addresses(${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} ${LIBS} cmsis device emlib rtcdrv )
 
-# print_target_properties(${PROJECT_NAME})
+print_target_properties(${PROJECT_NAME})
 
 # Link optional libraries if available
 if (${HAS_HARDWARE})
